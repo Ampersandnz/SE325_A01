@@ -1,7 +1,3 @@
-CREATE DATABASE library;
-
-USE library;
-
 DROP TABlE IF EXISTS person;
 DROP TABlE IF EXISTS customer;
 DROP TABlE IF EXISTS staff;

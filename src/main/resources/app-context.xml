@@ -13,15 +13,23 @@
         <jdbc:script location="classpath:test-data.sql"/>
     </jdbc:embedded-database>
     
-    <bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
-        <property name="sessionFactory" ref="springSessionFactory"/>
-    </bean>    
+<bean id="sessionFactory"
+    class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+    <property name="dataSource" ref="dataSource" />
+    <property name="configLocation">
+        <value>classpath:hibernate.cfg.xml</value>
+    </property>
+    <property name="hibernateProperties">
+        <props>
+            <prop key="hibernate.dialect">${jdbc.dialect}</prop>
+            <prop key="hibernate.show_sql">true</prop>
+        </props>
+    </property>
+</bean>
     
 	<tx:annotation-driven/>
 
 	<context:component-scan base-package="com.mlo450.se325.a01" />
-	
-	<bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
 
     <bean id="springSessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
