@@ -2,6 +2,7 @@ package com.mlo450.se325.a01.staff;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import com.mlo450.se325.a01.person.Person;
@@ -13,10 +14,18 @@ import com.mlo450.se325.a01.person.Person;
  */
 @Entity
 @Table(name = "staff") 
+@PrimaryKeyJoinColumn(name="person_id")
 public class StaffMember extends Person { 
+
+	private static final String _NO_POSITION = "No position specified.";
 	
 	@Column(name = "position")
 	private String position;
+
+	public StaffMember() {
+		super();
+		this.position = _NO_POSITION;
+	}
 	
 	public StaffMember(String name, String email, String position) {
 		super(name, email);

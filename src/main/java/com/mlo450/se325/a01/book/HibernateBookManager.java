@@ -8,49 +8,31 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.service.ServiceRegistry;
-import org.hibernate.service.ServiceRegistryBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 
-/**
- * 
- * @author Michael Lo
- * Hibernate database interface class. Has methods to Create, Read, Update and Delete User entries and objects to and from the database.
- * Also provides methods to get and delete all Books in the database, for convenience.
- *
- */
 public class HibernateBookManager implements BookManager{
-	private static SessionFactory sf;
-	private static ServiceRegistry serviceRegistry;
+
+	@Autowired
+	private static SessionFactory sessionFactory;
 
 	public HibernateBookManager() {
-	}
-
-	/**
-	 * Sets up the database interface objects. Only needs to be called once, although no harm can come of calling it again.
-	 */
-	public void initialise () {
-		try {
-			Configuration configuration = new Configuration();
-			configuration.configure("hibernate.cfg.xml");
-			serviceRegistry = new ServiceRegistryBuilder().applySettings(
-		            configuration.getProperties()).buildServiceRegistry();
-			sf = configuration.buildSessionFactory(serviceRegistry);
-		} catch (Throwable ex) {
-			System.err.println("Failed to create sessionFactory object." + ex);
-			throw new ExceptionInInitializerError(ex); 
+		if (sessionFactory == null) {
+			System.out.println("SessionFactory is null!");
+		} else {
+			System.out.println("SessionFactory is not null!");
 		}
 	}
-
-	/**
-	 * @param bookWithoutId
-	 * @return User ID
-	 * 
-	 * Method to create a new row in the database, and return its unique primary key identifier.
-	 * Takes as arguments a User object. Should only be called for Books that are not already in the database (have no id), or a copy will be created.
-	 */
+	
+	public SessionFactory getSessionFactory() {
+		return sessionFactory;
+	}
+	
+	public void setSessionFactory(SessionFactory newsessionFactory) {
+		sessionFactory = newsessionFactory;
+	}
+	
 	public Long addBook(Book bookWithoutId) { 
-		Session session = sf.openSession(); 
+		Session session = sessionFactory.openSession(); 
 		Transaction tx = null; 
 		Long bookId = null; 
 		try { 
@@ -68,15 +50,8 @@ public class HibernateBookManager implements BookManager{
 		return bookId; 
 	} 
 
-	/**
-	 * @param bookId
-	 * @param field
-	 * @param newData
-	 * 
-	 * Method to update a single value in the database. User ID corresponds to the row, field determines the column to be altered.
-	 */
 	public void updateBook(Book updated) { 
-		Session session = sf.openSession(); 
+		Session session = sessionFactory.openSession(); 
 		Transaction tx = null; 
 		try { 
 			tx = session.beginTransaction(); 
@@ -92,13 +67,8 @@ public class HibernateBookManager implements BookManager{
 		} 
 	} 
 
-	/**
-	 * @param id
-	 * 
-	 * Method to delete the row from the database with the given primary key.
-	 */
 	public void deleteBook(Long id) { 
-		Session session = sf.openSession(); 
+		Session session = sessionFactory.openSession(); 
 		Transaction tx = null; 
 
 		try { 
@@ -116,13 +86,8 @@ public class HibernateBookManager implements BookManager{
 		} 
 	} 
 
-	/**
-	 * @return AllBooks
-	 * 
-	 * Method to return a list of User objects, each representing one row in the database.
-	 */
 	public ArrayList<Book> getAllBooks( ){ 
-		Session session = sf.openSession(); 
+		Session session = sessionFactory.openSession(); 
 		Transaction tx = null; 
 		ArrayList<Book> allBooks = new ArrayList<Book>();
 
@@ -146,9 +111,6 @@ public class HibernateBookManager implements BookManager{
 		return null;
 	}
 
-	/**
-	 * Method to delete all entries in all rows of the database.
-	 */
 	public void deleteAllBooks( ) { 
 		try {
 			for (Book b: this.getAllBooks()) {
@@ -159,14 +121,8 @@ public class HibernateBookManager implements BookManager{
 		}
 	} 
 
-	/**
-	 * @param id
-	 * @return book
-	 * 
-	 * Method to return the User object representing the row of the database identified by the given primary key.
-	 */
 	public Book getBook(Long id) {
-		Session session = sf.openSession(); 
+		Session session = sessionFactory.openSession(); 
 		return ((Book) session.get(Book.class, id));
 	}
 }

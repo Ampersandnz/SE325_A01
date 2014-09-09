@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
 
@@ -14,7 +16,10 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "person") 
+@Inheritance(strategy=InheritanceType.JOINED)
 public class Person {
+
+	private static final String _NO_NAME = "No name specified.";
 	
 	@Id
 	@GeneratedValue
@@ -26,12 +31,17 @@ public class Person {
 	
 	@Column(name = "email", nullable = true, length = 50) 
 	private String email; 
-	
+
 	public Person() {
+		this.name = _NO_NAME;
+	}
+	
+	public Person(String name) {
+		this();
 	}
 
 	public Person(String name, String email) {
-		this();
+		this(name);
 		this.name = name;
 		this.email = email;
 	}

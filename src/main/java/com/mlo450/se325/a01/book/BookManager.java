@@ -9,13 +9,7 @@ import java.util.List;
  *         for convenience.
  */
 public interface BookManager {
-
-	/**
-	 * Sets up the database interface objects. Only needs to be called once,
-	 * although no harm can come of calling it again.
-	 */
-	public void initialise();
-
+	
 	/**
 	 * @param bookWithoutId
 	 * @return User ID Method to create a new row in the database, and return
