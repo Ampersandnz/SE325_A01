@@ -17,11 +17,6 @@ public class HibernateBookManager implements BookManager{
 	private static SessionFactory sessionFactory;
 
 	public HibernateBookManager() {
-		if (sessionFactory == null) {
-			System.out.println("SessionFactory is null!");
-		} else {
-			System.out.println("SessionFactory is not null!");
-		}
 	}
 	
 	public SessionFactory getSessionFactory() {

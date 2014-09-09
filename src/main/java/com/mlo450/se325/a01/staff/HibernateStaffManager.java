@@ -11,6 +11,7 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 
@@ -20,7 +21,7 @@ import org.hibernate.service.ServiceRegistryBuilder;
  *
  */
 public class HibernateStaffManager implements StaffManager{
-	private static SessionFactory sf;
+	private static SessionFactory sessionFactory;
 	private static ServiceRegistry serviceRegistry;
 
 	private static final String NONAME = "No name listed.";
@@ -29,6 +30,15 @@ public class HibernateStaffManager implements StaffManager{
 	
 	public HibernateStaffManager() {
 		
+	}
+	
+	public SessionFactory getSessionFactory() {
+		return sessionFactory;
+	}
+
+	@Autowired
+	public void setSessionFactory(SessionFactory newsessionFactory) {
+		sessionFactory = newsessionFactory;
 	}
 
 	/**
@@ -39,7 +49,7 @@ public class HibernateStaffManager implements StaffManager{
 			Configuration configuration = new Configuration();
 			configuration.configure();
 			serviceRegistry = new ServiceRegistryBuilder().applySettings(configuration.getProperties()).buildServiceRegistry();        
-			sf = configuration.buildSessionFactory(serviceRegistry);
+			sessionFactory = configuration.buildSessionFactory(serviceRegistry);
 		} catch (Throwable ex) { 
 			System.err.println("Failed to create sessionFactory object." + ex);
 			throw new ExceptionInInitializerError(ex); 
@@ -67,7 +77,7 @@ public class HibernateStaffManager implements StaffManager{
 			position = NOPOSITION;
 		}
 
-		Session session = sf.openSession(); 
+		Session session = sessionFactory.openSession(); 
 		Transaction tx = null; 
 		Long staffMemberId = null; 
 		
@@ -96,7 +106,7 @@ public class HibernateStaffManager implements StaffManager{
 	 * Takes as arguments a StaffMember object. Should only be called for StaffMembers that are not already in the database (have no id), or a copy will be created.
 	 */
 	public Long addStaffMember(StaffMember staffMemberWithoutId) { 
-		Session session = sf.openSession(); 
+		Session session = sessionFactory.openSession(); 
 		Transaction tx = null; 
 		Long staffMemberId = null; 
 		try { 
@@ -122,7 +132,7 @@ public class HibernateStaffManager implements StaffManager{
 	 * Method to update a single value in the database. StaffMember ID corresponds to the row, field is the name of the column to be altered.
 	 */
 	public void updateStaffMember(StaffMember updated) { 
-		Session session = sf.openSession(); 
+		Session session = sessionFactory.openSession(); 
 		Transaction tx = null;
 		try { 
 			tx = session.beginTransaction(); 
@@ -144,7 +154,7 @@ public class HibernateStaffManager implements StaffManager{
 	 * Method to delete the row from the database with the given primary key.
 	 */
 	public void deleteStaffMember(Long id) { 
-		Session session = sf.openSession(); 
+		Session session = sessionFactory.openSession(); 
 		Transaction tx = null; 
 
 		try { 
@@ -168,7 +178,7 @@ public class HibernateStaffManager implements StaffManager{
 	 * Method to return a list of StaffMember objects, each representing one row in the database.
 	 */
 	public ArrayList<StaffMember> getAllStaffMembers( ){ 
-		Session session = sf.openSession(); 
+		Session session = sessionFactory.openSession(); 
 		Transaction tx = null; 
 		ArrayList<StaffMember> allStaffMembers = new ArrayList<StaffMember>();
 
@@ -212,7 +222,7 @@ public class HibernateStaffManager implements StaffManager{
 	 * Method to return the StaffMember object representing the row of the database identified by the given primary key.
 	 */
 	public StaffMember getStaffMember(Long id) {
-		Session session = sf.openSession(); 
+		Session session = sessionFactory.openSession(); 
 		return ((StaffMember) session.get(StaffMember.class, id));
 	}
 }

@@ -11,6 +11,7 @@ import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mlo450.se325.a01.person.Person;
 
@@ -22,7 +23,7 @@ import com.mlo450.se325.a01.person.Person;
  *
  */
 public class HibernateCustomerManager implements CustomerManager{
-	private static SessionFactory sf;
+	private static SessionFactory sessionFactory;
 	private static ServiceRegistry serviceRegistry;
 
 	private static final String NAME = "name";
@@ -31,6 +32,15 @@ public class HibernateCustomerManager implements CustomerManager{
 	private static final String NOEMAIL = "No email available.";
 	
 	public HibernateCustomerManager() {
+	}
+	
+	public SessionFactory getSessionFactory() {
+		return sessionFactory;
+	}
+
+	@Autowired
+	public void setSessionFactory(SessionFactory newsessionFactory) {
+		sessionFactory = newsessionFactory;
 	}
 
 	/**
@@ -41,7 +51,7 @@ public class HibernateCustomerManager implements CustomerManager{
 			Configuration configuration = new Configuration();
 			configuration.configure();
 			serviceRegistry = new ServiceRegistryBuilder().applySettings(configuration.getProperties()).buildServiceRegistry();        
-			sf = configuration.buildSessionFactory(serviceRegistry);
+			sessionFactory = configuration.buildSessionFactory(serviceRegistry);
 		} catch (Throwable ex) { 
 			System.err.println("Failed to create sessionFactory object." + ex);
 			throw new ExceptionInInitializerError(ex); 
@@ -65,7 +75,7 @@ public class HibernateCustomerManager implements CustomerManager{
 			email = NOEMAIL;
 		}
 
-		Session session = sf.openSession(); 
+		Session session = sessionFactory.openSession(); 
 		Transaction tx = null; 
 		Long userId = null; 
 		
@@ -94,7 +104,7 @@ public class HibernateCustomerManager implements CustomerManager{
 	 * Takes as arguments a User object. Should only be called for Users that are not already in the database (have no id), or a copy will be created.
 	 */
 	public Long addUser(Person userWithoutId) { 
-		Session session = sf.openSession(); 
+		Session session = sessionFactory.openSession(); 
 		Transaction tx = null; 
 		Long userId = null; 
 		try { 
@@ -120,7 +130,7 @@ public class HibernateCustomerManager implements CustomerManager{
 	 * Method to update a single value in the database. User ID corresponds to the row, field is the name of the column to be altered.
 	 */
 	public void updateUser(Long userId, String field, String newData) { 
-		Session session = sf.openSession(); 
+		Session session = sessionFactory.openSession(); 
 		Transaction tx = null; 
 		try { 
 			tx = session.beginTransaction(); 
@@ -157,7 +167,7 @@ public class HibernateCustomerManager implements CustomerManager{
 	 * Method to delete the row from the database with the given primary key.
 	 */
 	public void deleteUser(Long id) { 
-		Session session = sf.openSession(); 
+		Session session = sessionFactory.openSession(); 
 		Transaction tx = null; 
 
 		try { 
@@ -181,7 +191,7 @@ public class HibernateCustomerManager implements CustomerManager{
 	 * Method to return a list of User objects, each representing one row in the database.
 	 */
 	public ArrayList<Person> getAllUsers( ){ 
-		Session session = sf.openSession(); 
+		Session session = sessionFactory.openSession(); 
 		Transaction tx = null; 
 		ArrayList<Person> allUsers = new ArrayList<Person>();
 
@@ -225,7 +235,7 @@ public class HibernateCustomerManager implements CustomerManager{
 	 * Method to return the User object representing the row of the database identified by the given primary key.
 	 */
 	public Person getUser(Long id) {
-		Session session = sf.openSession(); 
+		Session session = sessionFactory.openSession(); 
 		return ((Person) session.get(Person.class, id));
 	}
 }
