@@ -9,10 +9,11 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class HibernateBookManager implements BookManager{
 
-	@Autowired
 	private static SessionFactory sessionFactory;
 
 	public HibernateBookManager() {
@@ -26,7 +27,8 @@ public class HibernateBookManager implements BookManager{
 	public SessionFactory getSessionFactory() {
 		return sessionFactory;
 	}
-	
+
+	@Autowired
 	public void setSessionFactory(SessionFactory newsessionFactory) {
 		sessionFactory = newsessionFactory;
 	}
