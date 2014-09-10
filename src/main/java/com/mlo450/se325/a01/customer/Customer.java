@@ -1,15 +1,10 @@
 package com.mlo450.se325.a01.customer;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
-import com.mlo450.se325.a01.book.Book;
 import com.mlo450.se325.a01.person.Person;
 
 /**
@@ -26,10 +21,6 @@ public class Customer extends Person {
 	
 	@Column(name = "address")
 	private String address;
-
-	@OneToMany
-	@JoinColumn(name = "borrowed_id")
-	private List<Book> borrowed;
 	
 	public Customer() {
 		super();
