@@ -8,7 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import com.mlo450.se325.a01.person.Person;
+import com.mlo450.se325.a01.customer.Customer;
 
 /**
  * @author Michael Lo
@@ -18,6 +18,11 @@ import com.mlo450.se325.a01.person.Person;
 @Entity
 @Table(name = "BOOK") 
 public class Book { 
+	private static final int _NO_ISBN = 0;
+	private static final String _NO_TITLE = "No title listed.";
+	private static final String _NO_AUTHOR = "No author listed.";
+	private static final Customer _NO_OWNER = new Customer("Library", "library@theLibrary.com", "Library address.");
+	
 	@Id 
 	@GeneratedValue
 	@Column(name = "book_id") 
@@ -28,28 +33,31 @@ public class Book {
 
 	@Column(name = "title", nullable = false)
 	private String title;
+	
+	@Column(name = "author", nullable = false)
+	private String author;
 
 	@OneToOne
-	@JoinColumn(name = "owner_Id", nullable = true)
-	private Person owner;
+	@JoinColumn(name = "owner_Id", nullable = false)
+	private Customer owner;
 
 	public Book() {
+		isbn = _NO_ISBN;
+		title = _NO_TITLE;
+		author = _NO_AUTHOR;
+		owner = _NO_OWNER;
 	}
-	
-	public Book(int isbn, String title) {
-		this();
+
+	public Book(int isbn, String title, String author, Customer owner) {
+		if (isbn == 0) { isbn = _NO_ISBN; }
+		if (title == null) { title = _NO_TITLE; }
+		if (author == null) { author = _NO_AUTHOR; }
+		if (owner == null) { owner = _NO_OWNER; }
+		
 		this.isbn = isbn;
 		this.title = title;
-	}
-
-	public Book(int isbn, String title, Person owner) {
-		this(isbn, title);
+		this.author = author;
 		this.owner = owner;
-	}
-
-	public Book(Long id, int isbn, String title, Person owner) {
-		this(isbn, title, owner);
-		this.id = id;
 	}
 
 	public Long getId() { 
@@ -79,11 +87,20 @@ public class Book {
 		return this;
 	} 
 
-	public Person getOwner() { 
+	public String getAuthor() { 
+		return author; 
+	} 
+
+	public Book setAuthor(String author) { 
+		this.author = author;
+		return this;
+	} 
+
+	public Customer getOwner() { 
 		return owner; 
 	} 
 
-	public Book setOwner( Person owner ) { 
+	public Book setOwner(Customer owner) { 
 		this.owner = owner;
 		return this;
 	} 

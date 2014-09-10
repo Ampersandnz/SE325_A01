@@ -19,9 +19,9 @@ VALUES
 ('1', 'Admin');
 
 INSERT INTO book
-(isbn, title, owner_id)
+(isbn, title, author, owner_id)
 VALUES
-('00000', 'The Holy Bible', '2'),
-('99999', 'Mein Kampf', '2'),
-('12345', 'Playboy', '3'),
-('666', 'Learn Java in just fifteen short weeks!', '4');
+('00000', 'The Holy Bible', 'No author listed.', '2'),
+('99999', 'Book', 'Author', '2'),
+('12345', 'Playboy', 'Idk lol', '3'),
+('666', 'Learn Java in just fifteen short weeks!', 'That one guy who does all the x for dummies books', '4');

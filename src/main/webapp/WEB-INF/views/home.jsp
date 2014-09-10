@@ -1,10 +1,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="false" %>
-
+	
 <html>
 	<head>
 		<title>SE325_A01</title>
 	</head>
+	
 	
 	<body>
 		<h1>
@@ -26,7 +27,7 @@
 			    <tr>
 			        <td><c:out value="${book.isbn}"/></td>
 			        <td>|</td>
-			        <td><c:out value="${book.title}"/></td> 
+			        <td><a href="book/${book.id}"><c:out value="${book.title}"/></a></td> 
 			        <td>|</td>
 			        <td><c:out value="${book.owner.name}"/></td>  
 			    </tr>
@@ -44,7 +45,7 @@
 		    </tr>
 			<c:forEach items="${allStaffMembers}" var="staffMember">
 			    <tr>
-			        <td><c:out value="${staffMember.name}"/></td>
+			        <td><a href="staffmember/${staffMember.id}"><c:out value="${staffMember.name}"/></a></td>
 			        <td>|</td>
 			        <td><c:out value="${staffMember.email}"/></td> 
 			        <td>|</td>
@@ -64,7 +65,7 @@
 		    </tr>
 			<c:forEach items="${allCustomers}" var="customer">
 			    <tr>
-			        <td><c:out value="${customer.name}"/></td>
+			        <td><a href="customer/${customer.id}"><c:out value="${customer.name}"/></a></td>
 			        <td>|</td>
 			        <td><c:out value="${customer.email}"/></td> 
 			        <td>|</td>

@@ -29,7 +29,7 @@ public class TestHibernate {
 	}
 	
 	private static void checkBook() {
-		Book newBook = new Book(1247325792, "Book title");
+		Book newBook = new Book(1247325792, "Book title", "Author", null);
 		Long id = bookManager.addBook(newBook);
 		newBook.setId(id);
 		System.out.println("Book added - Id is " + newBook.getId());
