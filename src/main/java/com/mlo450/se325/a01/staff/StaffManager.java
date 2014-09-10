@@ -2,6 +2,8 @@ package com.mlo450.se325.a01.staff;
 
 import java.util.List;
 
+import org.hibernate.SessionFactory;
+
 /**
  * @author Michael Lo Database interface class. Has methods to Create, Read,
  *         Update and Delete User entries and objects to and from the database.
@@ -9,12 +11,10 @@ import java.util.List;
  *         for convenience.
  */
 public interface StaffManager {
+	
+	public SessionFactory getSessionFactory();
 
-	/**
-	 * Sets up the database interface objects. Only needs to be called once,
-	 * although no harm can come of calling it again.
-	 */
-	public void initialise();
+	public void setSessionFactory(SessionFactory newsessionFactory);
 
 	/**
 	 * @param userWithoutId

@@ -16,7 +16,7 @@
 	<bean id="sessionFactory"
 		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean"
 		autowire="byName">
-	    <property name="dataSource" ref="dataSource" />
+	    <property name="dataSource" ref="dataSource"/>
 	    <property name="annotatedClasses">
 	    	<list>
 				<value>com.mlo450.se325.a01.book.Book</value>
@@ -24,35 +24,8 @@
 				<value>com.mlo450.se325.a01.staff.StaffMember</value>  
 	        </list>
 	    </property>
-	    <property name="hibernateProperties">
-	        <props>
-			    <!-- Database connection settings -->
-			    <prop key="connection.driver_class">com.mysql.jdbc.Driver</prop>
-			    <prop key="connection.url">jdbc:mysql://localhost:3306/library</prop>
-				<prop key="connection.username">sa</prop>
-			    <prop key="connection.password"></prop>
-			
-			    <!-- JDBC connection pool (use the built-in) -->
-			    <prop key="connection.pool_size">1</prop>
-			
-			    <!-- SQL dialect -->
-				<prop key="dialect">org.hibernate.dialect.MySQLDialect</prop>
-			
-			    <!-- Enable Hibernate's automatic session context management -->
-			    <prop key="current_session_context_class">thread</prop>
-			
-			    <!-- Disable the second-level cache  -->
-			    <prop key="cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</prop>
-			
-			    <!-- Echo all executed SQL to stdout -->
-			    <prop key="show_sql">true</prop>
-			
-			    <!-- Drop and re-create the database schema on startup -->
-			    <prop key="hbm2ddl.auto">update</prop>
-	        </props>
-	    </property>
 	</bean>
-
+	
 	<tx:annotation-driven/>
 
 	<context:component-scan base-package="com.mlo450.se325.a01" />

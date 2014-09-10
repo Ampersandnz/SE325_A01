@@ -2,7 +2,7 @@ package com.mlo450.se325.a01.customer;
 
 import java.util.List;
 
-import com.mlo450.se325.a01.person.Person;
+import org.hibernate.SessionFactory;
 
 /**
  * @author Michael Lo Database interface class. Has methods to Create, Read,
@@ -11,12 +11,10 @@ import com.mlo450.se325.a01.person.Person;
  *         for convenience.
  */
 public interface CustomerManager {
+	
+	public SessionFactory getSessionFactory();
 
-	/**
-	 * Sets up the database interface objects. Only needs to be called once,
-	 * although no harm can come of calling it again.
-	 */
-	public void initialise();
+	public void setSessionFactory(SessionFactory newsessionFactory);
 
 	/**
 	 * @param name
@@ -26,7 +24,7 @@ public interface CustomerManager {
 	 *         fields of a User object, each corresponding to a column in the
 	 *         database.
 	 */
-	public Long addUser(String name, String email);
+	public Long addCustomer(String name, String email, String address);
 
 	/**
 	 * @param userWithoutId
@@ -35,7 +33,7 @@ public interface CustomerManager {
 	 *         object. Should only be called for Users that are not already in
 	 *         the database (have no id), or a copy will be created.
 	 */
-	public Long addUser(Person userWithoutId);
+	public Long addCustomer(Customer customerWithoutId);
 
 	/**
 	 * @param userId
@@ -45,31 +43,31 @@ public interface CustomerManager {
 	 *            corresponds to the row, field is the name of the column to be
 	 *            altered.
 	 */
-	public void updateUser(Long userId, String field, String newData);
+	public void updateCustomer(Customer updated);
 
 	/**
 	 * @param id
 	 *            Method to delete the row from the database with the given
 	 *            primary key.
 	 */
-	public void deleteUser(Long id);
+	public void deleteCustomer(Long id);
 
 	/**
 	 * @param id
 	 *            Method to empty the database.
 	 */
-	public void deleteAllUsers();
+	public void deleteAllCustomers();
 
 	/**
 	 * @return AllUsers Method to return a list of User objects, each
 	 *         representing one row in the database.
 	 */
-	public List<Person> getAllUsers();
+	public List<Customer> getAllCustomers();
 
 	/**
 	 * @param id
 	 * @return user Method to return the User object representing the row of the
 	 *         database identified by the given primary key.
 	 */
-	public Person getUser(Long id);
+	public Customer getCustomer(Long id);
 }

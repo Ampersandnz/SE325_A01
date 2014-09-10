@@ -8,21 +8,13 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.service.ServiceRegistry;
-import org.hibernate.service.ServiceRegistryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
-/**
- * 
- * @author Michael Lo
- * Hibernate database interface class. Has methods to Create, Read, Update and Delete StaffMember entries and objects to and from the database.
- * Also provides methods to get and delete all StaffMembers in the database, for convenience.
- *
- */
-public class HibernateStaffManager implements StaffManager{
+@Repository
+public class HibernateStaffManager implements StaffManager {
+	
 	private static SessionFactory sessionFactory;
-	private static ServiceRegistry serviceRegistry;
 
 	private static final String NONAME = "No name listed.";
 	private static final String NOEMAIL = "No email listed.";
@@ -41,29 +33,6 @@ public class HibernateStaffManager implements StaffManager{
 		sessionFactory = newsessionFactory;
 	}
 
-	/**
-	 * Sets up the database interface objects. Only needs to be called once, although no harm can come of calling it again.
-	 */
-	public void initialise () {
-		try {
-			Configuration configuration = new Configuration();
-			configuration.configure();
-			serviceRegistry = new ServiceRegistryBuilder().applySettings(configuration.getProperties()).buildServiceRegistry();        
-			sessionFactory = configuration.buildSessionFactory(serviceRegistry);
-		} catch (Throwable ex) { 
-			System.err.println("Failed to create sessionFactory object." + ex);
-			throw new ExceptionInInitializerError(ex); 
-		}
-	} 
-
-	/**
-	 * @param name
-	 * @param email
-	 * @return StaffMember ID
-	 * 
-	 * Method to create a new row in the database, and return its unique primary key identifier.
-	 * Takes as arguments the three fields of a StaffMember object, each corresponding to a column in the database.
-	 */
 	public Long addStaffMember(String name, String email, String position) { 
 		if (name.equals("") || null == name) {
 			name = NONAME;
@@ -98,13 +67,6 @@ public class HibernateStaffManager implements StaffManager{
 		return staffMemberId; 
 	} 
 
-	/**
-	 * @param staffMemberWithoutId
-	 * @return StaffMember ID
-	 * 
-	 * Method to create a new row in the database, and return its unique primary key identifier.
-	 * Takes as arguments a StaffMember object. Should only be called for StaffMembers that are not already in the database (have no id), or a copy will be created.
-	 */
 	public Long addStaffMember(StaffMember staffMemberWithoutId) { 
 		Session session = sessionFactory.openSession(); 
 		Transaction tx = null; 
@@ -124,13 +86,6 @@ public class HibernateStaffManager implements StaffManager{
 		return staffMemberId; 
 	} 
 
-	/**
-	 * @param staffMemberId
-	 * @param field
-	 * @param newData
-	 * 
-	 * Method to update a single value in the database. StaffMember ID corresponds to the row, field is the name of the column to be altered.
-	 */
 	public void updateStaffMember(StaffMember updated) { 
 		Session session = sessionFactory.openSession(); 
 		Transaction tx = null;
@@ -148,11 +103,6 @@ public class HibernateStaffManager implements StaffManager{
 		} 
 	} 
 
-	/**
-	 * @param id
-	 * 
-	 * Method to delete the row from the database with the given primary key.
-	 */
 	public void deleteStaffMember(Long id) { 
 		Session session = sessionFactory.openSession(); 
 		Transaction tx = null; 
@@ -172,11 +122,6 @@ public class HibernateStaffManager implements StaffManager{
 		} 
 	} 
 
-	/**
-	 * @return AllStaffMembers
-	 * 
-	 * Method to return a list of StaffMember objects, each representing one row in the database.
-	 */
 	public ArrayList<StaffMember> getAllStaffMembers( ){ 
 		Session session = sessionFactory.openSession(); 
 		Transaction tx = null; 
@@ -202,9 +147,6 @@ public class HibernateStaffManager implements StaffManager{
 		return null;
 	}
 
-	/**
-	 * Method to delete all entries in all rows of the database.
-	 */
 	public void deleteAllStaffMembers( ) {
 		try {
 			for (StaffMember b: this.getAllStaffMembers()) {
@@ -215,12 +157,6 @@ public class HibernateStaffManager implements StaffManager{
 		}
 	} 
 
-	/**
-	 * @param id
-	 * @return staffMember
-	 * 
-	 * Method to return the StaffMember object representing the row of the database identified by the given primary key.
-	 */
 	public StaffMember getStaffMember(Long id) {
 		Session session = sessionFactory.openSession(); 
 		return ((StaffMember) session.get(StaffMember.class, id));

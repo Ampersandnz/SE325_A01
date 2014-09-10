@@ -21,8 +21,6 @@
 		<beans:property name="suffix" value=".jsp" />
 	</beans:bean>
 	
-	<context:component-scan base-package="com.mlo450.se325" />
-	
-	
+	<context:component-scan base-package="com.mlo450.se325.a01" />
 	
 </beans:beans>
