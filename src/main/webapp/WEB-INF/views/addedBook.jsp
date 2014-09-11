@@ -3,11 +3,11 @@
     
 <html>
 	<head>
-		<title>${deletedBook.title} deleted</title>
+		<title>${addedBook.title} added</title>
 	</head>
 	
 	<body>
-		Book ${deletedBook.toString()} successfully deleted!
+		Book ${addedBook.toString()} was added to the library system!
 		
 		<form action="/library" method="get">
 			<button name="return" type="submit">Return</button>

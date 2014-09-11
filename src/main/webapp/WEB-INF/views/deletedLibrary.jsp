@@ -3,11 +3,11 @@
     
 <html>
 	<head>
-		<title>${deletedBook.title} deleted</title>
+		<title>Warning!</title>
 	</head>
 	
 	<body>
-		Book ${deletedBook.toString()} successfully deleted!
+		Library user cannot be deleted!
 		
 		<form action="/library" method="get">
 			<button name="return" type="submit">Return</button>

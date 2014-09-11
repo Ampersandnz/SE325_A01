@@ -6,13 +6,10 @@
 		<title>SE325_A01</title>
 	</head>
 	
-	
 	<body>
 		<h1>
 			Welcome to the library management system!
 		</h1>
-		
-		<P>  The time on the server is ${serverTime}. </P>
 		
 		<h2>Books:</h2>
 		<table>
@@ -33,6 +30,10 @@
 			    </tr>
 			</c:forEach>
 		</table>
+		
+		<form action="/library/book/add">
+    		<input type="submit" value="Add new book">
+		</form>
 		
 		<h2>Staff members:</h2>
 		<table>

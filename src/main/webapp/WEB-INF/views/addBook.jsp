@@ -3,26 +3,26 @@
 
 <html>
 	<head>
-		<title>Editing ${book.title}</title>
+		<title>Adding book</title>
 	</head>
 	
 	<body>
-		<form action="/library/book/${book.id}" method=post>
+		<form action="/library/book/added" method=post>
 			<table>
 				<tr>
 					<td><b>ISBN: </b></td>
-					<td><input type="number" name="isbn" value="${book.isbn}"><br></td>
+					<td><input type="number" name="isbn" value=""><br></td>
 				</tr>
 				<tr>
 					<td><b>Title: </b></td>
-					<td><input type="text" name="title" value="${book.title}"><br></td>
+					<td><input type="text" name="title" value=""><br></td>
 				</tr>
 				<tr>
 					<td><b>Author: </b></td>
-					<td><input type="text" name="author" value="${book.author}"></td>
+					<td><input type="text" name="author" value=""></td>
 				</tr>
-			</table>
-			<a href="/library/book/${book.id}">
+			</table>			
+			<a href="/library">
 				<input type="button" value="Cancel" />
 			</a>
 			<input type="submit" value="Save">

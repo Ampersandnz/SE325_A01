@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.mlo450.se325.a01.customer.Customer;
@@ -37,8 +37,8 @@ public class Book {
 	@Column(name = "author", nullable = false)
 	private String author;
 
-	@OneToOne
-	@JoinColumn(name = "owner_Id", nullable = false)
+	@ManyToOne
+	@JoinColumn(name = "owner_id")
 	private Customer owner;
 
 	public Book() {

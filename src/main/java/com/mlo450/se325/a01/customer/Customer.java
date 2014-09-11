@@ -1,10 +1,17 @@
 package com.mlo450.se325.a01.customer;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
+import com.mlo450.se325.a01.book.Book;
 import com.mlo450.se325.a01.person.Person;
 
 /**
@@ -22,6 +29,10 @@ public class Customer extends Person {
 	@Column(name = "address")
 	private String address;
 	
+    @OneToMany(mappedBy = "owner")
+	@Cascade(CascadeType.ALL)
+    private List<Book> borrowed;
+
 	public Customer() {
 		super();
 		this.address = _NO_ADDRESS;
@@ -31,7 +42,7 @@ public class Customer extends Person {
 		super(name, email);
 		this.address = address;
 	}
-	
+
 	public String getAddress() {
 		return address;
 	}
@@ -40,4 +51,13 @@ public class Customer extends Person {
 		this.address = address;
 		return this;
 	}
+    
+    public List<Book> getBorrowed() {
+        return borrowed;
+    }
+
+    public Customer setBorrowed(List<Book> borrowed) {
+        this.borrowed = borrowed;
+        return this;
+    }
 } 
