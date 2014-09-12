@@ -37,16 +37,6 @@ public class HomeController {
 		return "home";
 	}
 	
-	@RequestMapping(value = "/book/added", method = RequestMethod.POST)
-	public String bookAdded(Model model, int isbn, String title, String author) {
-		Book bookToAdd = new Book(isbn, title, author, customerManager.getCustomer((long) _LIBRARY_ID));
-		
-		bookManager.addBook(bookToAdd);
-		
-		model.addAttribute("addedBook", bookToAdd);
-		return "addedBook";
-	}
-	
 	@RequestMapping(value = "/book/{id}", method = RequestMethod.GET)
 	public String viewBook(@PathVariable("id") Long id, Model model) {
 		// Find the specific Book.
@@ -57,51 +47,6 @@ public class HomeController {
 		
 		// Return the logical view name that will render the model.
 		return "singleBookDetails";
-	}
-	
-	@RequestMapping(value = "/book/add", method = RequestMethod.GET)
-	public String addBook() {
-		// Return the logical view name that will render the model.
-		return "addBook";
-	}
-	
-	@RequestMapping(value = "/book/edit/{id}", method = RequestMethod.GET)
-	public String editBook(@PathVariable("id") Long id, Model model) {
-		// Find the specific Book.
-		Book book = bookManager.getBook(id);
-		
-		// Add the Book to the model.
-		model.addAttribute("book", book);
-		
-		// Return the logical view name that will render the model.
-		return "editBook";
-	}
-
-	@RequestMapping(value = "/book/{id}", method = RequestMethod.POST)
-	public String updateBook(@PathVariable("id") Long id, int isbn, String title, String author, Model model) {
-		// Find the specific Book.
-		Book book = bookManager.getBook(id);
-		
-		book.setIsbn(isbn);
-		book.setTitle(title);
-		book.setAuthor(author);
-		
-		bookManager.updateBook(book);
-		
-		// Add the Book to the model.
-		model.addAttribute("book", book);
-		
-		// Return the logical view name that will render the model.
-		return "singleBookDetails";
-	}
-	
-	@RequestMapping(value = "/book/deleted/{id}", method = RequestMethod.GET)
-	public String deleteBook(@PathVariable("id") Long id, Model model) {
-		Book book = bookManager.getBook(id);
-		bookManager.deleteBook(id);
-		
-		model.addAttribute("deletedBook", book);
-		return "deletedBook";
 	}
 	
 	@RequestMapping(value = "/customer/{id}", method = RequestMethod.GET)
@@ -124,6 +69,79 @@ public class HomeController {
 		return "singleCustomerDetails";
 	}
 	
+	@RequestMapping(value = "/staffmember/{id}", method = RequestMethod.GET)
+	public String viewStaffMember(@PathVariable("id") Long id, Model model) {
+		// Find the specific Book.
+		StaffMember staffMember = staffManager.getStaffMember(id);
+		
+		// Add the Book to the model.
+		model.addAttribute("staffMember", staffMember);
+		
+		// Return the logical view name that will render the model.
+		return "singleStaffMemberDetails";
+	}
+	
+	@RequestMapping(value = "/book/add", method = RequestMethod.GET)
+	public String addBook() {
+		// Return the logical view name that will render the model.
+		return "addBook";
+	}
+	
+	@RequestMapping(value = "/customer/add", method = RequestMethod.GET)
+	public String addCustomer() {
+		// Return the logical view name that will render the model.
+		return "addCustomer";
+	}
+	
+	@RequestMapping(value = "/staffMember/add", method = RequestMethod.GET)
+	public String addStaffMember() {
+		// Return the logical view name that will render the model.
+		return "addStaffMember";
+	}
+
+	@RequestMapping(value = "/book/added", method = RequestMethod.POST)
+	public String bookAdded(Model model, int isbn, String title, String author) {
+		Book bookToAdd = new Book(isbn, title, author, customerManager.getCustomer((long) _LIBRARY_ID));
+		
+		bookManager.addBook(bookToAdd);
+		
+		model.addAttribute("addedBook", bookToAdd);
+		return "addedBook";
+	}
+
+	@RequestMapping(value = "/customer/added", method = RequestMethod.POST)
+	public String customerAdded(Model model, String name, String email, String address) {
+		Customer customerToAdd = new Customer(name, email, address);
+		
+		customerManager.addCustomer(customerToAdd);
+		
+		model.addAttribute("addedCustomer", customerToAdd);
+		return "addedCustomer";
+	}
+
+	@RequestMapping(value = "/staffMember/added", method = RequestMethod.POST)
+	public String staffMemberAdded(Model model, String name, String email, String position) {
+		StaffMember staffMemberToAdd = new StaffMember(name, email, position);
+		
+		staffManager.addStaffMember(staffMemberToAdd);
+		
+		model.addAttribute("addedStaffMember", staffMemberToAdd);
+		return "addedStaffMember";
+	}
+	
+	@RequestMapping(value = "/book/edit/{id}", method = RequestMethod.GET)
+	public String editBook(@PathVariable("id") Long id, Model model) {
+		// Find the specific Book.
+		Book book = bookManager.getBook(id);
+		
+		// Add the Book to the model.
+		model.addAttribute("book", book);
+		model.addAttribute("allCustomers", customerManager.getAllCustomers());
+		
+		// Return the logical view name that will render the model.
+		return "editBook";
+	}
+
 	@RequestMapping(value = "/customer/edit/{id}", method = RequestMethod.GET)
 	public String editCustomer(@PathVariable("id") Long id, Model model) {
 		// Find the specific Customer.
@@ -136,6 +154,74 @@ public class HomeController {
 		return "editCustomer";
 	}
 
+	@RequestMapping(value = "/staffMember/edit/{id}", method = RequestMethod.GET)
+	public String editStaffMember(@PathVariable("id") Long id, Model model) {
+		// Find the specific StaffMember.
+		StaffMember staffMember = staffManager.getStaffMember(id);
+		
+		// Add the StaffMember to the model.
+		model.addAttribute("staffMember", staffMember);
+		
+		// Return the logical view name that will render the model.
+		return "editStaffMember";
+	}
+	
+	@RequestMapping(value = "/book/deleted/{id}", method = RequestMethod.GET)
+	public String deleteBook(@PathVariable("id") Long id, Model model) {
+		Book book = bookManager.getBook(id);
+		bookManager.deleteBook(id);
+		
+		model.addAttribute("deletedBook", book);
+		return "deletedBook";
+	}
+
+	@RequestMapping(value = "/customer/deleted/{id}", method = RequestMethod.GET)
+	public String deleteCustomer(@PathVariable("id") Long id, Model model) {
+		Customer customer = customerManager.getCustomer(id);
+		
+		if (customer.getId() != _LIBRARY_ID) {
+			customerManager.deleteCustomer(id);
+			
+			model.addAttribute("deletedCustomer", customer);
+			return "deletedCustomer";
+		} else {
+			return "deletedLibrary";
+		}
+	}
+	
+	@RequestMapping(value = "/staffMember/deleted/{id}", method = RequestMethod.GET)
+	public String deleteStaffMember(@PathVariable("id") Long id, Model model) {
+		StaffMember staffMember = staffManager.getStaffMember(id);
+		staffManager.deleteStaffMember(id);
+		
+		model.addAttribute("deletedStaffMember", staffMember);
+		return "deletedStaffMember";
+	}
+
+	@RequestMapping(value = "/book/{id}", method = RequestMethod.POST)
+	public String updateBook(@PathVariable("id") Long id, int isbn, String title, String author, String owner, Model model) {
+		// Find the specific Book.
+		Book book = bookManager.getBook(id);
+		
+		book.setIsbn(isbn);
+		book.setTitle(title);
+		book.setAuthor(author);
+		
+		for (Customer c: customerManager.getAllCustomers()) {
+			if (c.getName().equals(owner)) {
+				book.setOwner(c);
+			}
+		}
+		
+		bookManager.updateBook(book);
+		
+		// Add the Book to the model.
+		model.addAttribute("book", book);
+		
+		// Return the logical view name that will render the model.
+		return "singleBookDetails";
+	}
+	
 	@RequestMapping(value = "/customer/{id}", method = RequestMethod.POST)
 	public String updateCustomer(@PathVariable("id") Long id, String name, String email, String address, Model model) {
 		// Find the specific Customer.
@@ -152,44 +238,6 @@ public class HomeController {
 		
 		// Return the logical view name that will render the model.
 		return "singleCustomerDetails";
-	}
-	
-	@RequestMapping(value = "/customer/deleted/{id}", method = RequestMethod.GET)
-	public String deleteCustomer(@PathVariable("id") Long id, Model model) {
-		Customer customer = customerManager.getCustomer(id);
-		
-		if (customer.getId() != _LIBRARY_ID) {
-			customerManager.deleteCustomer(id);
-			
-			model.addAttribute("deletedCustomer", customer);
-			return "deletedCustomer";
-		} else {
-			return "deletedLibrary";
-		}
-	}
-	
-	@RequestMapping(value = "/staffmember/{id}", method = RequestMethod.GET)
-	public String viewStaffMember(@PathVariable("id") Long id, Model model) {
-		// Find the specific Book.
-		StaffMember staffMember = staffManager.getStaffMember(id);
-		
-		// Add the Book to the model.
-		model.addAttribute("staffMember", staffMember);
-		
-		// Return the logical view name that will render the model.
-		return "singleStaffMemberDetails";
-	}
-	
-	@RequestMapping(value = "/staffMember/edit/{id}", method = RequestMethod.GET)
-	public String editStaffMember(@PathVariable("id") Long id, Model model) {
-		// Find the specific StaffMember.
-		StaffMember staffMember = staffManager.getStaffMember(id);
-		
-		// Add the StaffMember to the model.
-		model.addAttribute("staffMember", staffMember);
-		
-		// Return the logical view name that will render the model.
-		return "editStaffMember";
 	}
 
 	@RequestMapping(value = "/staffMember/{id}", method = RequestMethod.POST)
@@ -208,14 +256,5 @@ public class HomeController {
 		
 		// Return the logical view name that will render the model.
 		return "singleStaffMemberDetails";
-	}
-	
-	@RequestMapping(value = "/staffMember/deleted/{id}", method = RequestMethod.GET)
-	public String deleteStaffMember(@PathVariable("id") Long id, Model model) {
-		StaffMember staffMember = staffManager.getStaffMember(id);
-		staffManager.deleteStaffMember(id);
-		
-		model.addAttribute("deletedStaffMember", staffMember);
-		return "deletedStaffMember";
 	}
 }

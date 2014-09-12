@@ -21,6 +21,16 @@
 					<td><b>Author: </b></td>
 					<td><input type="text" name="author" value="${book.author}"></td>
 				</tr>
+				<tr>
+					<td><b>Current owner: </b></td>
+					<td>
+						<select name="owner">
+							<c:forEach items="${allCustomers}" var="customer">
+				    			<option value="${customer.name}">${customer.name}</option>
+							</c:forEach>
+						</select>
+					</td>
+				</tr>
 			</table>
 			<a href="/library/book/${book.id}">
 				<input type="button" value="Cancel" />

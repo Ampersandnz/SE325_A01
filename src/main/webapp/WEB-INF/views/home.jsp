@@ -55,6 +55,10 @@
 			</c:forEach>
 		</table>
 		
+		<form action="/library/staffMember/add">
+    		<input type="submit" value="Add new staff member">
+		</form>
+		
 		<h2>Customers:</h2>
 		<table>
 		   	<tr>
@@ -74,6 +78,10 @@
 			    </tr>
 			</c:forEach>
 		</table>
+		
+		<form action="/library/customer/add">
+    		<input type="submit" value="Add new customer">
+		</form>
 		
 	</body>
 </html>
