@@ -7,6 +7,7 @@ import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -374,5 +375,35 @@ public class HomeController {
 		
 		// Return the logical view name that will render the model.
 		return "singleStaffMemberDetails";
+	}
+	
+	@RequestMapping(value="/book/{id}", method=RequestMethod.PUT)
+	public void putBook(@RequestBody Book book, @PathVariable Long id) {
+		bookManager.addBook(book);
+	}
+
+	@RequestMapping(value="/book/{id}", method=RequestMethod.DELETE)
+	public void deleteBook(@PathVariable Long id) {
+		bookManager.deleteBook(id);
+	}
+	
+	@RequestMapping(value="/customer/{id}", method=RequestMethod.PUT)
+	public void putCustomer(@RequestBody Customer customer, @PathVariable Long id) {
+		customerManager.addCustomer(customer);
+	}
+
+	@RequestMapping(value="/customer/{id}", method=RequestMethod.DELETE)
+	public void deleteCustomer(@PathVariable Long id) {
+		customerManager.deleteCustomer(id);
+	}
+	
+	@RequestMapping(value="/staffMember/{id}", method=RequestMethod.PUT)
+	public void putStaffMember(@RequestBody StaffMember staffMember, @PathVariable Long id) {
+		staffManager.addStaffMember(staffMember);
+	}
+
+	@RequestMapping(value="/staffMember/{id}", method=RequestMethod.DELETE)
+	public void deleteStaffMember(@PathVariable Long id) {
+		staffManager.deleteStaffMember(id);
 	}
 }
