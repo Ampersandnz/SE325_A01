@@ -3,6 +3,8 @@ package com.mlo450.se325.a01;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,6 +36,7 @@ public class HomeController {
 	private static CustomerManager customerManager;
 	private static StaffManager staffManager;
 	
+	@PostConstruct
 	private void initialise() {
 		if (_LOGGING_ENABLED) {
 	        ProxyFactory pf1 = new ProxyFactory();
@@ -67,10 +70,6 @@ public class HomeController {
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model) {
-		if (_FIRST_RUN) {
-			this.initialise();
-		}
-		
 		model.addAttribute("allBooks", bookManager.getAllBooks());
 		model.addAttribute("allStaffMembers", staffManager.getAllStaffMembers());
 		model.addAttribute("allCustomers", customerManager.getAllCustomers());
@@ -79,13 +78,9 @@ public class HomeController {
 	
 	@RequestMapping(value = "/book/{id}", method = RequestMethod.GET)
 	public String viewBook(@PathVariable("id") Long id, Model model) {
-		if (_FIRST_RUN) {
-			this.initialise();
-		}
-		
 		// Find the specific Book.
 		Book book = bookManager.getBook(id);
-		
+
 		// Add the Book to the model.
 		model.addAttribute("book", book);
 		
@@ -95,10 +90,6 @@ public class HomeController {
 	
 	@RequestMapping(value = "/customer/{id}", method = RequestMethod.GET)
 	public String viewCustomer(@PathVariable("id") Long id, Model model) {
-		if (_FIRST_RUN) {
-			this.initialise();
-		}
-		
 		// Find the specific Book.
 		Customer customer = customerManager.getCustomer(id);
 		List<Book> borrowedBooks = new ArrayList<Book>();
@@ -119,10 +110,6 @@ public class HomeController {
 	
 	@RequestMapping(value = "/staffmember/{id}", method = RequestMethod.GET)
 	public String viewStaffMember(@PathVariable("id") Long id, Model model) {
-		if (_FIRST_RUN) {
-			this.initialise();
-		}
-		
 		// Find the specific Book.
 		StaffMember staffMember = staffManager.getStaffMember(id);
 		
@@ -135,40 +122,24 @@ public class HomeController {
 	
 	@RequestMapping(value = "/book/add", method = RequestMethod.GET)
 	public String addBook() {
-		if (_FIRST_RUN) {
-			this.initialise();
-		}
-		
 		// Return the logical view name that will render the model.
 		return "addBook";
 	}
 	
 	@RequestMapping(value = "/customer/add", method = RequestMethod.GET)
 	public String addCustomer() {
-		if (_FIRST_RUN) {
-			this.initialise();
-		}
-		
 		// Return the logical view name that will render the model.
 		return "addCustomer";
 	}
 	
 	@RequestMapping(value = "/staffMember/add", method = RequestMethod.GET)
 	public String addStaffMember() {
-		if (_FIRST_RUN) {
-			this.initialise();
-		}
-		
 		// Return the logical view name that will render the model.
 		return "addStaffMember";
 	}
 
 	@RequestMapping(value = "/book/added", method = RequestMethod.POST)
 	public String bookAdded(Model model, int isbn, String title, String author) {
-		if (_FIRST_RUN) {
-			this.initialise();
-		}
-		
 		Book bookToAdd = new Book(isbn, title, author, customerManager.getCustomer((long) _LIBRARY_ID));
 		
 		bookManager.addBook(bookToAdd);
@@ -179,10 +150,6 @@ public class HomeController {
 
 	@RequestMapping(value = "/customer/added", method = RequestMethod.POST)
 	public String customerAdded(Model model, String name, String email, String address) {
-		if (_FIRST_RUN) {
-			this.initialise();
-		}
-		
 		Customer customerToAdd = new Customer(name, email, address);
 		
 		customerManager.addCustomer(customerToAdd);
@@ -193,10 +160,6 @@ public class HomeController {
 
 	@RequestMapping(value = "/staffMember/added", method = RequestMethod.POST)
 	public String staffMemberAdded(Model model, String name, String email, String position) {
-		if (_FIRST_RUN) {
-			this.initialise();
-		}
-		
 		StaffMember staffMemberToAdd = new StaffMember(name, email, position);
 		
 		staffManager.addStaffMember(staffMemberToAdd);
@@ -207,10 +170,6 @@ public class HomeController {
 	
 	@RequestMapping(value = "/book/edit/{id}", method = RequestMethod.GET)
 	public String editBook(@PathVariable("id") Long id, Model model) {
-		if (_FIRST_RUN) {
-			this.initialise();
-		}
-		
 		// Find the specific Book.
 		Book book = bookManager.getBook(id);
 		
@@ -224,10 +183,6 @@ public class HomeController {
 
 	@RequestMapping(value = "/customer/edit/{id}", method = RequestMethod.GET)
 	public String editCustomer(@PathVariable("id") Long id, Model model) {
-		if (_FIRST_RUN) {
-			this.initialise();
-		}
-		
 		// Find the specific Customer.
 		Customer customer = customerManager.getCustomer(id);
 		
@@ -239,11 +194,7 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/staffMember/edit/{id}", method = RequestMethod.GET)
-	public String editStaffMember(@PathVariable("id") Long id, Model model) {
-		if (_FIRST_RUN) {
-			this.initialise();
-		}
-		
+	public String editStaffMember(@PathVariable("id") Long id, Model model) {		
 		// Find the specific StaffMember.
 		StaffMember staffMember = staffManager.getStaffMember(id);
 		
@@ -256,10 +207,6 @@ public class HomeController {
 	
 	@RequestMapping(value = "/book/deleted/{id}", method = RequestMethod.GET)
 	public String deleteBook(@PathVariable("id") Long id, Model model) {
-		if (_FIRST_RUN) {
-			this.initialise();
-		}
-		
 		Book book = bookManager.getBook(id);
 		
 		if (book.getOwner().getId() == _LIBRARY_ID) {
@@ -274,10 +221,6 @@ public class HomeController {
 
 	@RequestMapping(value = "/customer/deleted/{id}", method = RequestMethod.GET)
 	public String deleteCustomer(@PathVariable("id") Long id, Model model) {
-		if (_FIRST_RUN) {
-			this.initialise();
-		}
-		
 		Customer customer = customerManager.getCustomer(id);
 		
 		if (customer.getId() == _LIBRARY_ID) {
@@ -294,10 +237,6 @@ public class HomeController {
 	
 	@RequestMapping(value = "/staffMember/deleted/{id}", method = RequestMethod.GET)
 	public String deleteStaffMember(@PathVariable("id") Long id, Model model) {
-		if (_FIRST_RUN) {
-			this.initialise();
-		}
-		
 		StaffMember staffMember = staffManager.getStaffMember(id);
 		staffManager.deleteStaffMember(id);
 		
@@ -307,10 +246,6 @@ public class HomeController {
 
 	@RequestMapping(value = "/book/{id}", method = RequestMethod.POST)
 	public String updateBook(@PathVariable("id") Long id, int isbn, String title, String author, String owner, Model model) {
-		if (_FIRST_RUN) {
-			this.initialise();
-		}
-		
 		// Find the specific Book.
 		Book book = bookManager.getBook(id);
 		
@@ -357,10 +292,6 @@ public class HomeController {
 
 	@RequestMapping(value = "/staffMember/{id}", method = RequestMethod.POST)
 	public String updateStaffMember(@PathVariable("id") Long id, String name, String email, String position, Model model) {
-		if (_FIRST_RUN) {
-			this.initialise();
-		}
-		
 		// Find the specific StaffMember.
 		StaffMember staffMember = staffManager.getStaffMember(id);
 		
