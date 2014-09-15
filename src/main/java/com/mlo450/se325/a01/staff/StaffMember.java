@@ -17,7 +17,7 @@ import com.mlo450.se325.a01.person.Person;
 @PrimaryKeyJoinColumn(name="person_id")
 public class StaffMember extends Person { 
 
-	private static final String _NO_POSITION = "No position specified.";
+	private static final String _NO_POSITION = "No position listed.";
 	
 	@Column(name = "position")
 	private String position;
@@ -29,6 +29,7 @@ public class StaffMember extends Person {
 	
 	public StaffMember(String name, String email, String position) {
 		super(name, email);
+		if (position == null || position.equals("")) { position = _NO_POSITION; }
 		this.position = position;
 	}
 	

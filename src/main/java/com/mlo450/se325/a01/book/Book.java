@@ -50,9 +50,9 @@ public class Book {
 
 	public Book(int isbn, String title, String author, Customer owner) {
 		if (isbn == 0) { isbn = _NO_ISBN; }
-		if (title == null) { title = _NO_TITLE; }
-		if (author == null) { author = _NO_AUTHOR; }
-		if (owner == null) { owner = _NO_OWNER; }
+		if (title == null || title.equals("")) { title = _NO_TITLE; }
+		if (author == null || author.equals("")) { author = _NO_AUTHOR; }
+		if (owner == null || owner.equals("")) { owner = _NO_OWNER; }
 		
 		this.isbn = isbn;
 		this.title = title;

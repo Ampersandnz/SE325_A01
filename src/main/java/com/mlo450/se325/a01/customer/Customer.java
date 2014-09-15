@@ -24,7 +24,7 @@ import com.mlo450.se325.a01.person.Person;
 @PrimaryKeyJoinColumn(name="person_id")
 public class Customer extends Person { 
 	
-	private static final String _NO_ADDRESS = "No address specified.";
+	private static final String _NO_ADDRESS = "No address listed.";
 	
 	@Column(name = "address")
 	private String address;
@@ -40,6 +40,7 @@ public class Customer extends Person {
 	
 	public Customer(String name, String email, String address) {
 		super(name, email);
+		if (address == null || address.equals("")) { address = _NO_ADDRESS; }
 		this.address = address;
 	}
 

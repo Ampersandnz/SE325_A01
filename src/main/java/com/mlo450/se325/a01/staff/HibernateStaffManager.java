@@ -15,10 +15,6 @@ import org.springframework.stereotype.Repository;
 public class HibernateStaffManager implements StaffManager {
 	
 	private static SessionFactory sessionFactory;
-
-	private static final String NONAME = "No name listed.";
-	private static final String NOEMAIL = "No email listed.";
-	private static final String NOPOSITION = "No position listed.";
 	
 	public HibernateStaffManager() {
 		
@@ -34,18 +30,6 @@ public class HibernateStaffManager implements StaffManager {
 	}
 
 	public Long addStaffMember(String name, String email, String position) { 
-		if (name.equals("") || null == name) {
-			name = NONAME;
-		}
-
-		if (email.equals("") || null == email) {
-			email = NOEMAIL;
-		}
-		
-		if (position.equals("") || null == position) {
-			position = NOPOSITION;
-		}
-
 		Session session = sessionFactory.openSession(); 
 		Transaction tx = null; 
 		Long staffMemberId = null; 

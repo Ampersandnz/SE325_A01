@@ -19,7 +19,8 @@ import javax.persistence.Table;
 @Inheritance(strategy=InheritanceType.JOINED)
 public class Person {
 
-	private static final String _NO_NAME = "No name specified.";
+	private static final String _NO_NAME = "No name listed.";
+	private static final String _NO_EMAIL = "No email address listed.";
 	
 	@Id
 	@GeneratedValue
@@ -34,21 +35,19 @@ public class Person {
 
 	public Person() {
 		this.name = _NO_NAME;
+		this.email = _NO_EMAIL;
 	}
 	
 	public Person(String name) {
 		this();
+		if (name == null || name.equals("")) { name = _NO_NAME; }
+		this.name = name;
 	}
 
 	public Person(String name, String email) {
 		this(name);
-		this.name = name;
+		if (email == null || email.equals("")) { email = _NO_NAME; }
 		this.email = email;
-	}
-	
-	public Person(Long id, String name, String email) {
-		this(name, email);
-		this.id = id;
 	}
 
 	public Long getId() { 
@@ -86,16 +85,13 @@ public class Person {
 		if (other == null) {
 			return false;
 		} else {
-		
 			if (!this.getClass().equals(other.getClass())) { 
 				return false;
 			} else {
-		
 				Person person2 = (Person) other;
 				if ((this.id == person2.getId()) && (this.name.equals(person2.getName()) && (this.email.equals(person2.getEmail())))) {
 					return true;
 				} else {
-					
 					return false;
 				}
 			}
